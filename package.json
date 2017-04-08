@@ -1,0 +1,19 @@
+{
+  "name": "oauthprovider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vincenzo prencipe",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "fbgraph": "^1.4.1",
+    "instagram-screen-scrape": "^2.0.0",
+    "passport": "^0.3.2",
+    "passport-facebook-token": "^3.3.0",
+    "request": "^2.81.0"
+  }
+}
