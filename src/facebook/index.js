@@ -1,15 +1,12 @@
 'use strict';
 
 const graph = require('fbgraph');
+const response = require('../response');
 const instagramToken = "772063.e1a7d52.e7b764b7603b45859054c0b35d0c5bc2";
 
 module.exports.handler = (event, context, callback) => {
     graph.setAccessToken('123739874833009|90f51ceaa1b4968477157d4acb4b256a');
     let paging = "";
-    /*var options = {
-        timeout: 3000,
-        headers: { connection: "keep-alive" }
-    };*/
     var options = {};
     var allPosts = [];
     var a = {};
@@ -28,7 +25,6 @@ module.exports.handler = (event, context, callback) => {
                 }
 
                 while (res.paging && res.paging.next && i < 5);
-
                 let postPromises = [];
 
                 Promise.all(promises).then(values => {
@@ -55,10 +51,8 @@ module.exports.handler = (event, context, callback) => {
                             } else {
                                 acc[curr] += 1;
                             }
-
                             return acc;
                         }, {});
-
 
                         let comments = 0;
                         let likes = 0;
@@ -75,9 +69,15 @@ module.exports.handler = (event, context, callback) => {
                                         a['likes'] = res.fan_count
                                     }
                                     console.log(a);
+                                    response.body = JSON.stringify(a)
+                                    callback(null, response);
                                 });
                         });
                     });
+                }).catch((err) => {
+                    response.status = 400
+                    response.body = JSON.stringify(err)
+                    callback(null, response);
                 });
             }
         });
@@ -119,10 +119,7 @@ module.exports.handler = (event, context, callback) => {
     const reactions = (id) => {
         return new Promise((resolve, reject) => {
             graph.get(id + '?fields=comments.limit(0).summary(total_count).as(comments), reactions.type(LIKE).limit(0).summary(total_count).as(like)', (err, result) => {
-                //if (result) {
-                //console.log(result);
                 err ? reject(err) : resolve(result);
-                //}
             });
         });
     };

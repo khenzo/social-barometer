@@ -1,9 +1,10 @@
 'use strict';
 var InstagramPosts, streamOfPosts;
 InstagramPosts = require('instagram-screen-scrape').InstagramPosts;
-var cheerio = require('cheerio');
-var http = require('http');
-var request = require('request');
+const cheerio = require('cheerio');
+const http = require('http');
+const request = require('request');
+const response = require('../response');
 
 module.exports.handler = (event, context, callback) => {
     streamOfPosts = new InstagramPosts({
@@ -12,7 +13,7 @@ module.exports.handler = (event, context, callback) => {
     });
 
     accountInfo().then((data) =>{
-        var result = Object.assign({}, data);
+        let result = Object.assign({}, data);
         result['like'] = 0;
         result['comments'] = 0;
         streamOfPosts.on('data', function(post) {
@@ -20,7 +21,12 @@ module.exports.handler = (event, context, callback) => {
                 result['comments'] += parseInt(post.comments);
         }).on('end', function() {
             console.log(JSON.stringify(result));
-            callback(null, JSON.stringify(result));
+            response.body = (JSON.stringify(result))
+            callback(null, response);
+        }).catch((error) =>{
+            response.status = 400;
+            response.body = JSON.stringify(error)
+            callback(error, response);
         });
     })
 
