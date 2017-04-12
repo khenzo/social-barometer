@@ -1,17 +1,26 @@
-service: oath-provider
+service: social-barometer
 
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
+custom:
+  service: ${self:service}-${self:provider.stage}
+  defaultStage: dev
+  defaultRegion: eu-west-1
+  defaultAccount: 627450054263
+  defaultProfile: hackathon
+  version: 1
 
 provider:
   name: aws
   runtime: nodejs6.10
   region: eu-west-1
   profile: hackathon
+  stage: dev
   account: 627450054263
   memorySize: 128
-  timeout: 10
+  apiKeys:
+    - ${self:custom.service}
+  timeout: 30
+  environment:
+    TOKEN: 123739874833009|90f51ceaa1b4968477157d4acb4b256a
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -20,16 +29,28 @@ provider:
         - "arn:aws:dynamodb:*:*:table/*"
 
 functions:
-  login:
-    handler: src/handler.login
+  page:
+    handler: src/handler.facebook
     events:
-      - http:
-          path: login
-          method: get
-  token:
-    handler: src/handler.token
+     - http:
+        path: page/{id}
+        integration: lambda-proxy
+        method: get
+        cors: true
+  search:
+    handler: src/handler.search
     events:
-      - http:
-          path: /auth/facebook/token
-          method: post
+     - http:
+        path: search
+        integration: lambda-proxy
+        method: get
+        cors: true
+  instagram:
+    handler: src/handler.instagram
+    events:
+     - http:
+        path: instagram/{user}
+        integration: lambda-proxy
+        method: get
+        cors: true        
 
