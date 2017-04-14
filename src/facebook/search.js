@@ -6,6 +6,7 @@ const Response = require('../service/httpResponse');
 module.exports.handler = (event, context, callback) => {
     console.log(JSON.stringify(event));
     let response = new Response();
+    response.enableCors();
 
     graph.setAccessToken(process.env.TOKEN);
 
@@ -21,7 +22,7 @@ module.exports.handler = (event, context, callback) => {
         .setOptions(options)
         .get("search?q=" + q + "&fields=id,name,picture&type=page&limit=20", function(err, res) {
             if (!err) {
-                response.body(JSON.stringify(res.data)).toJSON();
+                response.body(JSON.stringify(res)).toJSON();
                 callback(null, response.response)
             } else {
                 response.statusCode = 400;

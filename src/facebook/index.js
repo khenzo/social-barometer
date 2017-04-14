@@ -5,6 +5,7 @@ const Response = require('../service/httpResponse');
 
 module.exports.handler = (event, context, callback) => {
     let response = new Response();
+    response.enableCors();
     graph.setAccessToken(process.env.TOKEN);
 
     let paging = "";
@@ -16,7 +17,7 @@ module.exports.handler = (event, context, callback) => {
 
     graph
         .setOptions({})
-        .get(pageId + "/posts?fields=id,type&limit=100", function(err, res) {
+        .get(pageId + "/posts?fields=id,type&limit=50", function(err, res) {
             let promises = [];
             allPosts.push(res.data);
             if (res.paging && res.paging.next) {
@@ -27,7 +28,7 @@ module.exports.handler = (event, context, callback) => {
                     i++;
                 }
 
-                while (res.paging && res.paging.next && i < 5);
+                while (res.paging && res.paging.next && i < 2);
                 let postPromises = [];
 
                 Promise.all(promises).then(values => {
@@ -73,6 +74,7 @@ module.exports.handler = (event, context, callback) => {
                                     a['picture'] = res.picture.data
                                     a['posts'] = postsIds.length
                                 }
+                                delete a['undefined'];
                                 response.body(JSON.stringify(a)).toJSON();
                                 callback(null, response.response);
                             });
@@ -81,7 +83,7 @@ module.exports.handler = (event, context, callback) => {
                 }).catch((err) => {
                     console.log(JSON.stringify(err));
                     response.statusCode = 400
-                    response.body(err).toJSON();
+                    response.body(JSON.stringify(err)).toJSON();
                     callback(null, response.response);
                 });
             }

@@ -1,34 +1,42 @@
 'use strict';
-var InstagramPosts, streamOfPosts;
-InstagramPosts = require('instagram-screen-scrape').InstagramPosts;
 const cheerio = require('cheerio');
 const http = require('http');
 const request = require('request');
 const Response = require('../service/httpResponse');
 
 module.exports.handler = (event, context, callback) => {
-    console.log(JSON.stringify(event));
+    var InstagramPosts, streamOfPosts;
+    InstagramPosts = require('instagram-screen-scrape').InstagramPosts;
+
+    //console.log(JSON.stringify(event));
     let response = new Response();
+    response.enableCors();
     var params = event.pathParameters || {};
     var user = params.user;
 
     streamOfPosts = new InstagramPosts({
         username: user,
-        num: 20
+        num: 5
     });
 
     accountInfo(user).then((data) => {
         let result = Object.assign({}, data);
         result['like'] = 0;
         result['comments'] = 0;
+        let count = 0;
         streamOfPosts.on('data', function(post) {
-            result['like'] += parseInt(post.likes);
-            result['comments'] += parseInt(post.comments);
+            if (typeof(post) != "undefined") {
+                result['like'] += parseInt(post.likes);
+                result['comments'] += parseInt(post.comments);
+                count++;
+            }
         }).on('end', function() {
+            result['posts'] = count;
             console.log(JSON.stringify(result));
             response.body(JSON.stringify(result)).toJSON();
             callback(null, response.response)
         })
+
     }).catch((error) => {
         response.statusCode = 400;
         response.body(JSON.stringify(error)).toJSON();
