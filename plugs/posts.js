@@ -52,8 +52,8 @@ InstagramPosts = (function(superClass) {
     function InstagramPosts(arg) {
         this.username = arg.username;
         this.destroy = bind(this.destroy, this);
+        this.iterator = 0
         this._read = bind(this._read, this);
-        this.postNum = arg.num;
         InstagramPosts.__super__.constructor.call(this, {
             highWaterMark: 16,
             objectMode: true
@@ -61,10 +61,9 @@ InstagramPosts = (function(superClass) {
         this._readableState.destroyed = false;
     }
 
-    var iterations = 0;
+
     InstagramPosts.prototype._read = function() {
-        var hasMorePosts, lastPost;
-        var postNum = this.postNum;
+        var hasMorePosts, lastPost, iterator;
         if (this._lock) {
             return;
         }
@@ -75,65 +74,61 @@ InstagramPosts = (function(superClass) {
         }
         hasMorePosts = false;
         lastPost = void 0;
-        return getPosts(this.username, this._minPostId).on('error', (function(_this) {
-            return function(err) {
-                return _this.emit('error', err);
-            };
 
-        })(this)).on('data', (function(_this) {
-            return function(rawPost) {
-                var post;
-                hasMorePosts = true;
-                post = {
-                    id: rawPost.code,
-                    username: _this.username,
-                    time: +rawPost['created_time'],
-                    type: rawPost.type,
-                    likes: rawPost.likes.count,
-                    comments: rawPost.comments.count
+        if (this.iterator < 2) {
+            return getPosts(this.username, this._minPostId).on('error', (function(_this) {
+                return function(err) {
+                    return _this.emit('error', err);
                 };
-                if (rawPost.caption != null) {
-                    post.text = rawPost.caption.text;
-                }
-                switch (post.type) {
-                    case 'image':
-                        post.media = rawPost.images['standard_resolution'].url;
-                        break;
-                    case 'video':
-                        post.media = rawPost.videos['standard_resolution'].url;
-                        break;
-                    default:
-                        throw new Error("Instagram did not return a URL for the media on post " + post.id);
-                }
-                _this._minPostId = rawPost.id;
-                if (lastPost != null) {
-                    _this.push(lastPost);
-                }
-                iterations++;
-                if (iterations === postNum) {
-                    return this.emit('close');
-                } else {
+            })(this)).on('data', (function(_this) {
+                return function(rawPost) {
+                    var post;
+                    hasMorePosts = true;
+                    post = {
+                        id: rawPost.code,
+                        username: _this.username,
+                        time: +rawPost['created_time'],
+                        type: rawPost.type,
+                        likes: rawPost.likes.count,
+                        comments: rawPost.comments.count
+                    };
+                    if (rawPost.caption != null) {
+                        post.text = rawPost.caption.text;
+                    }
+                    switch (post.type) {
+                        case 'image':
+                            post.media = rawPost.images['standard_resolution'].url;
+                            break;
+                        case 'video':
+                            post.media = rawPost.videos['standard_resolution'].url;
+                            break;
+                        default:
+                            throw new Error("Instagram did not return a URL for the media on post " + post.id);
+                    }
+                    _this._minPostId = rawPost.id;
+                    if (lastPost != null) {
+                        _this.push(lastPost);
+                    }
+                    _this.iterator++;
                     return lastPost = post;
-                }
-            };
-        })(this)).on('end', (function(_this) {
-            return function() {
-                if (hasMorePosts) {
-                    _this._lock = false;
-                }
-                if (lastPost != null) {
-                    _this.push(lastPost);
-                }
-                if (!hasMorePosts) {
-                    return _this.push(null);
-                }
-            };
-        })(this)).on('close', (function(_this) {
-            return function() {
-             return _this.push(null);
-            }
-        })(this));
-    };
+                };
+            })(this)).on('end', (function(_this) {
+                return function() {
+                    if (hasMorePosts) {
+                        _this._lock = false;
+                    }
+                    if (lastPost != null) {
+                        _this.push(lastPost);
+                    }
+                    if (!hasMorePosts) {
+                        return _this.push(null);
+                    }
+                };
+            })(this));
+        } else {
+            return this.emit('end');
+        }
+    }
 
     InstagramPosts.prototype.destroy = function() {
         if (this._readableState.destroyed) {
