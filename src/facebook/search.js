@@ -1,28 +1,49 @@
 'use strict';
 
 const graph = require('fbgraph');
-const response = require('../response');
-const instagramToken = "772063.e1a7d52.e7b764b7603b45859054c0b35d0c5bc2";
+const Response = require('../service/httpResponse');
 
 module.exports.handler = (event, context, callback) => {
-    graph.setAccessToken('123739874833009|90f51ceaa1b4968477157d4acb4b256a');
+    console.log(JSON.stringify(event));
+    let response = new Response();
+
+    graph.setAccessToken(process.env.TOKEN);
+
     let paging = "";
     var options = {};
     var allPosts = [];
     var a = {};
 
+    const queryObject = event.queryStringParameters || {};
+    const q = queryObject.q || "";
+
     graph
         .setOptions(options)
-        .get("search?q=yoox&fields=id,name,picture&type=page&limit=100", function(err, res) {
+        .get("search?q=" + q + "&fields=id,name,picture&type=page&limit=20", function(err, res) {
             if (!err) {
-                response.body = JSON.stringify(res.data);
-                console.log(JSON.stringify(res.data));
-                callback(null, response);
+                response.body(JSON.stringify(res.data)).toJSON();
+                callback(null, response.response)
             } else {
-                response.status = 400;
-                response.body = JSON.stringify(err);
-                callback(err, response);
+                response.statusCode = 400;
+                response.body(JSON.stringify(err)).toJSON();
+                callback(null, response.response)
             }
         });
 
 };
+
+const flatQuerystring = (event) => {
+    const queryObject = event.queryStringParameters || {};
+    const queryKeys = Object.keys(queryObject);
+    const qs = [];
+    for (var key in queryKeys) {
+        qs.push(key);
+        qs.push("=");
+        qs.push(encodeURIComponent(queryObject[key]));
+        qs.push("&");
+    }
+    if (qs.length) {
+        qs.pop();
+    }
+    return qs.join('');
+}

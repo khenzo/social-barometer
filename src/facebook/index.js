@@ -1,19 +1,22 @@
 'use strict';
 
 const graph = require('fbgraph');
-const response = require('../response');
-const instagramToken = "772063.e1a7d52.e7b764b7603b45859054c0b35d0c5bc2";
+const Response = require('../service/httpResponse');
 
 module.exports.handler = (event, context, callback) => {
-    graph.setAccessToken('123739874833009|90f51ceaa1b4968477157d4acb4b256a');
+    let response = new Response();
+    graph.setAccessToken(process.env.TOKEN);
+
     let paging = "";
-    var options = {};
-    var allPosts = [];
-    var a = {};
+    let allPosts = [];
+    let a = {};
+
+    const params = event.pathParameters || {};
+    const pageId = params.id || "";
 
     graph
-        .setOptions(options)
-        .get("barillaIT/posts?fields=id,type&limit=100", function(err, res) {
+        .setOptions({})
+        .get(pageId + "/posts?fields=id,type&limit=100", function(err, res) {
             let promises = [];
             allPosts.push(res.data);
             if (res.paging && res.paging.next) {
@@ -63,21 +66,23 @@ module.exports.handler = (event, context, callback) => {
                             }
                             a['comments'] = comments;
                             a['reactions'] = likes;
-                            graph.setOptions(options)
-                                .get("barillaIT?fields=likes", function(err, res) {
-                                    if (!err) {
-                                        a['likes'] = res.fan_count
-                                    }
-                                    console.log(a);
-                                    response.body = JSON.stringify(a)
-                                    callback(null, response);
-                                });
+                            graph.setOptions({}).get(+pageId + "?fields=fan_count,name,picture", function(err, res) {
+                                if (!err) {
+                                    a['likes'] = res.fan_count
+                                    a['name'] = res.name
+                                    a['picture'] = res.picture.data
+                                    a['posts'] = postsIds.length
+                                }
+                                response.body(JSON.stringify(a)).toJSON();
+                                callback(null, response.response);
+                            });
                         });
                     });
                 }).catch((err) => {
-                    response.status = 400
-                    response.body = JSON.stringify(err)
-                    callback(null, response);
+                    console.log(JSON.stringify(err));
+                    response.statusCode = 400
+                    response.body(err).toJSON();
+                    callback(null, response.response);
                 });
             }
         });
