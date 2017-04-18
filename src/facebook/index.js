@@ -73,6 +73,7 @@ module.exports.handler = (event, context, callback) => {
                                     a['name'] = res.name
                                     a['picture'] = res.picture.data
                                     a['posts'] = postsIds.length
+                                    a['pageid'] = pageId
                                 }
                                 delete a['undefined'];
                                 response.body(JSON.stringify(a)).toJSON();
