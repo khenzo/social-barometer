@@ -90,7 +90,9 @@ InstagramPosts = (function(superClass) {
                         time: +rawPost['created_time'],
                         type: rawPost.type,
                         likes: rawPost.likes.count,
-                        comments: rawPost.comments.count
+                        comments: rawPost.comments.count,
+                        videos: 0,
+                        photos: 0
                     };
                     if (rawPost.caption != null) {
                         post.text = rawPost.caption.text;
@@ -100,6 +102,7 @@ InstagramPosts = (function(superClass) {
                             post.media = rawPost.images['standard_resolution'].url;
                             break;
                         case 'video':
+                            post.views = rawPost.video_views
                             post.media = rawPost.videos['standard_resolution'].url;
                             break;
                         default:

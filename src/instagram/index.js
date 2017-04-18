@@ -23,12 +23,21 @@ module.exports.handler = (event, context, callback) => {
         let result = Object.assign({}, data);
         result['like'] = 0;
         result['comments'] = 0;
+        result['views'] = 0;
+        result['photos'] = 0;
+        result['videos'] = 0;
         let count = 0;
         streamOfPosts.on('data', function(post) {
             if (typeof(post) != "undefined") {
                 result['like'] += parseInt(post.likes);
                 result['comments'] += parseInt(post.comments);
                 count++;
+                if (post.type == "video") {
+                    result['views'] += post.views;
+                    result['videos'] = result['videos'] + 1;
+                } else {
+                    result['photos'] = result['photos'] + 1;
+                }
             }
         }).on('end', function() {
             result['posts'] = count;

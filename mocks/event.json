@@ -1,6 +1,6 @@
 {
     "resource": "/instagram/{user}",
-    "path": "/instagram/yoox",
+    "path": "/instagram/chiaraferragni",
     "httpMethod": "GET",
     "headers": {
         "Accept": "*/*",
@@ -25,7 +25,7 @@
     },
     "queryStringParameters": null,
     "pathParameters": {
-        "user": "yoox"
+        "user": "chiaraferragni"
     },
     "stageVariables": null,
     "requestContext": {
