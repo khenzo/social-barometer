@@ -7,6 +7,13 @@ custom:
   defaultAccount: 627450054263
   defaultProfile: hackathon
   version: 1
+  clientDeploy:
+     CLIENT_S3_BUCKET: ${self:custom.service}-www
+     CLIENT_CONFIG_PATH: "./www/config/config.json" 
+     CLIENT_FOLDER: "./www/"
+
+plugins:
+  - clientsetup  
 
 provider:
   name: aws
@@ -52,5 +59,29 @@ functions:
         path: instagram/{user}
         integration: lambda-proxy
         method: get
-        cors: true        
+        cors: true
+resources:
+  Resources:
+   WwwBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties: 
+     BucketName: ${self:custom.clientDeploy.CLIENT_S3_BUCKET}
+     AccessControl: "PublicRead"
+     WebsiteConfiguration : 
+         IndexDocument: "index.html"
+         ErrorDocument: "index.html"
+   WwwBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: WwwBucket
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action:
+            - s3:GetObject
+            Resource: arn:aws:s3:::${self:custom.clientDeploy.CLIENT_S3_BUCKET}/*                
 
