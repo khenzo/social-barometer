@@ -60,6 +60,13 @@ functions:
         integration: lambda-proxy
         method: get
         cors: true
+  google:
+    handler: src/handler.npl
+    events:
+      - http:
+          path: npl
+          method: post
+          cors: true            
 resources:
   Resources:
    WwwBucket:

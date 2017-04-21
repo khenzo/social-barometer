@@ -15,4 +15,4 @@ context.done = function() {
     console.log("Lambda Function Complete");
 };
 
-app.instagram(event, context, callback);
+app.npl(event, context, callback);

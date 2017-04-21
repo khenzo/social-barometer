@@ -1,10 +1,10 @@
 {
-    "resource": "/npl",
-    "path": "/npl",
-    "httpMethod": "POST",
+    "resource": "/page/{user}",
+    "path": "/page/7248739415",
+    "httpMethod": "GET",
     "headers": {
         "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Encoding": "gzip, deflate, sdch, br",
         "Accept-Language": "en-US,en;q=0.8",
         "cache-control": "no-cache",
         "CloudFront-Forwarded-Proto": "https",
@@ -13,26 +13,26 @@
         "CloudFront-Is-SmartTV-Viewer": "false",
         "CloudFront-Is-Tablet-Viewer": "false",
         "CloudFront-Viewer-Country": "IT",
-        "content-type": "text/plain;charset=UTF-8",
         "Host": "z37eavgxdh.execute-api.eu-west-1.amazonaws.com",
-        "origin": "chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop",
-        "postman-token": "627dba2b-862d-e53d-051b-498b16685400",
+        "postman-token": "fe45aae2-5c47-4527-4e61-bd0ff3ac5d17",
         "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
-        "Via": "2.0 87683b2e94f5a08f552b261ed269c83b.cloudfront.net (CloudFront)",
-        "X-Amz-Cf-Id": "ZYZutyMfCDSDNMzP75ADAlQapomASW51iF1i7MVJoAOZkSJdsvsYXQ==",
-        "X-Amzn-Trace-Id": "Root=1-58fa2674-25cdd2d5179cbd88562030da",
-        "X-Forwarded-For": "2.228.172.178, 54.240.145.46",
+        "Via": "2.0 4001cc23eb32ec3ac8fe5303310fc493.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "lzsa1BKpHHAsSA2kKcex_jF4S4JJqi163Tsa5CWlPIdvFmbK1eB4Rg==",
+        "X-Amzn-Trace-Id": "Root=1-58ee4505-45a14ec46449e0de1a9c53da",
+        "X-Forwarded-For": "2.228.172.178, 205.251.208.73",
         "X-Forwarded-Port": "443",
         "X-Forwarded-Proto": "https"
     },
     "queryStringParameters": null,
-    "pathParameters": null,
+    "pathParameters": {
+        "id": "7248739415"
+    },
     "stageVariables": null,
     "requestContext": {
         "accountId": "627450054263",
-        "resourceId": "2pumey",
+        "resourceId": "tbhi1i",
         "stage": "dev",
-        "requestId": "f8848e34-26a7-11e7-b88c-7b33245cafbc",
+        "requestId": "222f05bf-1f93-11e7-afe2-9dfc71184422",
         "identity": {
             "cognitoIdentityPoolId": null,
             "accountId": null,
@@ -47,10 +47,10 @@
             "userAgent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
             "user": null
         },
-        "resourcePath": "/npl",
-        "httpMethod": "POST",
+        "resourcePath": "/instagram/{user}",
+        "httpMethod": "GET",
         "apiId": "z37eavgxdh"
     },
-    "body": "{\"text\": \"Sotto forma di romanzi, e di romanzi a prima vista lontanissimi dallesperienza quotidiana, i suoi libri dicevano letteralmente la verit. Nella sua ingenua convinzione di scrivere opere di fantasia, non aveva fatto altro che redigere dei rapporti\"}",
+    "body": null,
     "isBase64Encoded": false
 }

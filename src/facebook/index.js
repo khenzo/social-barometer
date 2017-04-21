@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const graph = require('fbgraph');
 const Response = require('../service/httpResponse');
@@ -35,8 +35,8 @@ module.exports.handler = (event, context, callback) => {
                     values.forEach((element) => {
                         postPromises.push(posts(element));
                     });
-                    var postsIds = [];
-                    var postType = [];
+                    let postsIds = [];
+                    let postType = [];
                     Promise.all(postPromises).then(data => {
                         data.forEach((post) => {
                             post.forEach((postId) => {
@@ -50,7 +50,7 @@ module.exports.handler = (event, context, callback) => {
                         });
 
                         a = postType.reduce(function(acc, curr) {
-                            if (typeof acc[curr] == 'undefined') {
+                            if (typeof acc[curr] === 'undefined') {
                                 acc[curr] = 1;
                             } else {
                                 acc[curr] += 1;
@@ -60,13 +60,16 @@ module.exports.handler = (event, context, callback) => {
 
                         let comments = 0;
                         let likes = 0;
+                        let shares = 0;
                         getPosts(postsIds).then((data) => {
                             for (let item of data) {
                                 comments += item.comments.summary.total_count;
                                 likes += item.like.summary.total_count;
+                                shares += typeof(item.shares) !== "undefined" ? item.shares.count : 0;
                             }
                             a['comments'] = comments;
                             a['reactions'] = likes;
+                            a['shares'] = shares;
                             graph.setOptions({}).get(+pageId + "?fields=fan_count,name,picture", function(err, res) {
                                 if (!err) {
                                     a['likes'] = res.fan_count
@@ -126,7 +129,7 @@ module.exports.handler = (event, context, callback) => {
     //11503325699_10153169377835700?fields=reactions.type(LIKE).limit(0).summary(total_count).as(reactions_like),reactions.type(LOVE).limit(0).summary(true).as(love),reactions.type(HAHA).limit(0).summary(total_count).as(haha),reactions.type(ANGRY).limit(0).summary(total_count).as(angry),reactions.type(WOW).limit(0).summary(total_count).as(wow),reactions.type(SAD).limit(0).summary(total_count).as(sad),reactions.type(THANKFUL).limit(0).summary(total_count).as(thankful),
     const reactions = (id) => {
         return new Promise((resolve, reject) => {
-            graph.get(id + '?fields=comments.limit(0).summary(total_count).as(comments), reactions.type(LIKE).limit(0).summary(total_count).as(like)', (err, result) => {
+            graph.get(id + '?fields=shares.limit(0).summary(total_count).as(shares),comments.limit(0).summary(total_count).as(comments), reactions.type(LIKE).limit(0).summary(total_count).as(like)', (err, result) => {
                 err ? reject(err) : resolve(result);
             });
         });
@@ -136,7 +139,7 @@ module.exports.handler = (event, context, callback) => {
     const postTypeCount = (arr) => {
         return new Promise((resolve, reject) => {
             arr.reduce(function(acc, curr) {
-                if (typeof arr[curr] == 'undefined') {
+                if (typeof arr[curr] === 'undefined') {
                     acc[curr] = 1;
                 } else {
                     acc[curr] += 1;

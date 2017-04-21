@@ -9,6 +9,7 @@
   "author": "vincenzo prencipe",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/language": "^0.10.3",
     "cheerio": "^0.22.0",
     "fbgraph": "^1.4.1",
     "instagram-screen-scrape": "^2.0.0",
