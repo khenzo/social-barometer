@@ -44,12 +44,12 @@ module.exports.handler = (event, context, callback) => {
             }
         }).on('end', function() {
             result['posts'] = count;
-            let vision = new Vison();
-            vision.analyze(result.images).then((data) => {
-                result['vision'] = data;
-                response.body(JSON.stringify(result)).toJSON();
-                callback(null, response.response)
-            })
+            //let vision = new Vison();
+            //vision.analyze(result.images).then((data) => {
+            //  result['vision'] = data;
+            response.body(JSON.stringify(result)).toJSON();
+            callback(null, response.response)
+                //})
         })
     }).catch((error) => {
         response.statusCode = 400;
