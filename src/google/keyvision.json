@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "social-barometer",
+  "private_key_id": "feab7bcc2aac6f385d26e386fde7fa2f384fd8e3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDMDLuEHxwSM3u/\nLghskA6Su9NPsOCqGqCwlZELYmbHFQ/1BNrt5eBR4KaqLUJySay3SVqFGHxjVkkH\nd1yewjiyiMUAhMKLvv8kJd1SAM/In7U2ZtdcAvAADNF0NGWaEFAcxGAJ4LCjH2HT\nBJAChW/2h4n2//27Qm7GUgIylOffkZlRz6aPS2H7656lLbcAekF1p2OHukfXRDxY\nQ6Z4rU40iGTrNbua7aNcggoWO6c4MrpaPdP9Y0E9dEkpVDPBc/wdwKSSUhMZylLZ\nBFijT6fjcRSPWMBMPWgq7PH+SReNz+SKeuuCkVbnVl4AvdOz3YgOPkmh6XmZlJf4\nu/UBApPJAgMBAAECggEALowBAqSuHKDN69Cub0V1bZeXHqi0t1kXqvCTg8tQsr1l\nRHl1D6vOvh7HJi7o53VTBwSet5ncVjTKt/9Mi5K2qFN2zSV707EgNrjEgf5ZZ+S2\ny9At9HlfEkPaS+3f94MdI1LQrbAp2yw/fomd6FVUMyK8IDJJSTxgVLFEexFoy6Dc\n0vEFdnj+cmdglJFuqFyeNstE3M3Z2RFuknIJfe6WuyZC5otJ7iSMF24hA+EhLLyN\nXk2foIOPwhzdZDBffnUZ5J5MAVDJEHujzVuXC97ltzQBb3woFnjjAspmNvtXHzK5\niAM6lA0A+IQaxYnbw2Fkreta2m0MozsZr7QDAVZ0+QKBgQDpOwrA1tFrHFeSMRWt\n9PQG3aLnz7KB5QGYtGMyX0avHWm3EZpbELAyF3TExQMv88DLwuNauuX3zyhikdkg\ngHsFqEQqCynpQder+ie6aGv4HDHnJHyyVggT0gnQuFvoZyCSb3m9qtRj7rbiTAtZ\npyAXcPR0RtUk/LIVg3L3psrItwKBgQDf+GTtz8qIb31B2KTxWWpgNSdjKYOrY4dy\n1u3p8gPOWziahUlP3wdT0TkZlUSSSnovEInODd1qNhXvaNb3dwE+n4n2IkAPyzIb\niOByZwkOx3UA54cGfCr2GohbXhQfLrxSgPsJ5SuV04O4gFJsrAoed2j8Q8Iv04OY\nFrujXHQHfwKBgQDE3C4OaQPoicqsvbuT0l8rcGYxjhEZLMf1McVM3jiWVJhHipcj\n6GkgTsYj1DsFfZQtKPmoOnsjePqYgIypr2indMjcSAH/PbEiGwrvf3YqvPmuJREP\noig9OptITmRdPLa0g11Zp1iQZQx+5DrsWHFw98mOX79G8fgKyqH+wQ0G7wKBgEnb\ntAzodTXA7mGEfABLKFVJsg91ZUJjtAse7Z40fSTT2Dq8sYxxVA1D9byGCPLlNJ3I\nqmkVEWsxItKslBdPW023dtuAN/f9XizOWpXffJEvHVqK/3AYCmLWJRlcUO5njxr2\nBdMhi9oAwnNZfdTwdvXNEwX9ok/7RG4nMQGSP4EpAoGAVP7Px6AHqJ4DebpDXohO\nnNpPF7/YokPqAZ7YQPYTvReU3UdDpHahJ50DXuZJUdMuWQ5CPtSa70eh2LNBgXTu\nY/QCA2qOPUHGYBxo1bZRNkF6RKzIf8I5XXy7OibtLa+RfYRUtjZWXj55h1BL9ObV\ndmg7y2MLNvFyHbGvlNMWWZg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "visionkey@social-barometer.iam.gserviceaccount.com",
+  "client_id": "102311374588475274132",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/visionkey%40social-barometer.iam.gserviceaccount.com"
+}

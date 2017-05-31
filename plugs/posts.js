@@ -92,7 +92,8 @@ InstagramPosts = (function(superClass) {
                         likes: rawPost.likes.count,
                         comments: rawPost.comments.count,
                         videos: 0,
-                        photos: 0
+                        photos: 0,
+                        images: []
                     };
                     if (rawPost.caption != null) {
                         post.text = rawPost.caption.text;
@@ -104,6 +105,7 @@ InstagramPosts = (function(superClass) {
                         case 'video':
                             post.views = rawPost.video_views
                             post.media = rawPost.videos['standard_resolution'].url;
+                            post.images.push(rawPost.videos['standard_resolution'].url);
                             break;
                         default:
                             throw new Error("Instagram did not return a URL for the media on post " + post.id);

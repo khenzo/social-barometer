@@ -3,11 +3,11 @@ const cheerio = require('cheerio');
 const http = require('http');
 const request = require('request');
 const Response = require('../service/httpResponse');
+const Vison = require('../google/vision');
 
 module.exports.handler = (event, context, callback) => {
     var InstagramPosts, streamOfPosts;
     InstagramPosts = require('instagram-screen-scrape').InstagramPosts;
-
     //console.log(JSON.stringify(event));
     let response = new Response();
     response.enableCors();
@@ -26,6 +26,8 @@ module.exports.handler = (event, context, callback) => {
         result['views'] = 0;
         result['photos'] = 0;
         result['videos'] = 0;
+        result['images'] = [];
+        result['vision'] = {};
         let count = 0;
         streamOfPosts.on('data', function(post) {
             if (typeof(post) != "undefined") {
@@ -37,15 +39,18 @@ module.exports.handler = (event, context, callback) => {
                     result['videos'] = result['videos'] + 1;
                 } else {
                     result['photos'] = result['photos'] + 1;
+                    result['images'].push(post.media);
                 }
             }
         }).on('end', function() {
             result['posts'] = count;
-            console.log(JSON.stringify(result));
-            response.body(JSON.stringify(result)).toJSON();
-            callback(null, response.response)
+            let vision = new Vison();
+            vision.analyze(result.images).then((data) => {
+                result['vision'] = data;
+                response.body(JSON.stringify(result)).toJSON();
+                callback(null, response.response)
+            })
         })
-
     }).catch((error) => {
         response.statusCode = 400;
         response.body(JSON.stringify(error)).toJSON();
